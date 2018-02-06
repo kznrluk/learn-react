@@ -1,0 +1,21 @@
+body {
+    line-height: 1.5;
+    color: 546E7A;
+    background-color: rgb(240, 240, 245);
+    font-family: 'Roboto+Slab', 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+}
+
+.mainbox {
+    padding: 0.5em 1em;
+    margin: 2em 0 2em 0;
+    color: #343a40;
+    background: white;
+    border-top: solid 5px #343a40;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.22);
+}
+
+.mainbox h1 {
+    font-size: 27.8px;
+    margin: 15px 0 15px 0;
+    padding: 0;
+}
