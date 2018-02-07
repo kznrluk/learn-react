@@ -7,18 +7,20 @@ import registerServiceWorker from './registerServiceWorker';
 
 const init = {
     text: "HELLO",
-    count: 0
+    count: 2
 }
 
 // REDUSER
-function STARS(state = init, action){
+const STARS = (state = init, action) => {
     switch(action.type){
         case 'ADD_STAR':
+            console.log(state.count)
             return Object.assign({}, state, {
-               count: state.count++
+               count: state.count * state.count
             });
         default:
-            ;
+            return Object.assign({}, state, {
+            });
     }
 }
 
@@ -28,12 +30,12 @@ const ADD_STAR = "ADD_STAR"
 
 // ACTION
 const addStar = () => {
-    console.log('DISPATCH')
     return {
         type: ADD_STAR
     }
 }
 
+console.log(store.getState().count)
 
 
 class View extends React.Component {
@@ -42,31 +44,40 @@ class View extends React.Component {
         this.status = {
             stars : 10
         }
+        this.onClick = this.onClick.bind(this)
     }
     onClick() {
-        store.dispatch(addStar());
+        this.props.onClick();
     }
     render (){
         let stars = ""
-        for(let i = 0; i <= this.status.stars ; i++){
+        for(let i = 0; i <= store.getState().count ; i++){
             stars = stars + '☆'
         }
         return (
             <div>
-                HELLO{stars}
+                <p>HELLO{stars}</p>
                 <button onClick={this.onClick}>☆</button>
             </div>
         );
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return store
+const mapStore = state => {
+    return state
 }
 
+const mapDispatch = dispatch => {
+    return {
+        onClick() {
+            dispatch(addStar());
+        }
+    }
+}
 
 const Connecter = connect(
-    mapDispatchToProps
+    mapStore,
+    mapDispatch
 )(View)
 
 ReactDOM.render(
