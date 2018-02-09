@@ -1,34 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux'
+import { createStore, bindActionCreators } from 'redux'
 import { Provider, connect } from "react-redux";
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
 import unixtotime from './time.js'
 import STARS from './redux-reduser.js'
-import * as ACTION from './redux-types.js'
+import * as Actions from './redux-actions.js'
 
 // REDUSER
 let store = createStore(STARS);
 
-
-// ACTION
-const addStar = () => {
-    return {
-        type: ACTION.ADD_STAR
-    }
-}
-const CHANGE_TIME = () => {
-    const nowTime = new Date().getTime()
-    return {
-        type: ACTION.RELOAD_TIME,
-        value: nowTime
-    }
-}
-
 setInterval(()=>{
-    store.dispatch(CHANGE_TIME());
+    store.dispatch(Actions.CHANGE_TIME());
 },1000)
 
 console.log(store.getState().count)
@@ -54,6 +39,7 @@ class View extends React.Component {
     constructor(props){
         super(props);
         this.onClick = this.onClick.bind(this)
+        console.log(this.props)
     }
     onClick() {
         this.props.onClick();
@@ -67,32 +53,55 @@ class View extends React.Component {
             <div>
                 <Clock time={this.props.time}/>
                 <p>HELLO{stars}</p>
-                <button onClick={this.onClick}>☆</button>
+                <StarButton {...this.props}/>
+                <TimeButton {...this.props}/>
             </div>
         );
     }
 }
 
-const mapStore = state => {
-    return state
-}
+class StarButton extends React.Component {
+    render(){
+        const {
+            addStar,
+        } = this.props;
 
-const mapDispatch = dispatch => {
-    return {
-        onClick() {
-            dispatch(addStar());
-        }
+        return(
+            <button onClick={addStar}>addStar</button>
+        )
+    }
+}
+class TimeButton extends React.Component {
+    render(){
+        const {
+            CHANGE_TIME,
+        } = this.props;
+
+        return(
+            <button onClick={CHANGE_TIME}>CHANGE_TIME</button>
+        )
     }
 }
 
-const Connecter = connect(
-    mapStore,
-    mapDispatch
+const mapStateToProps = state => {
+    return {
+        time: state.time,
+        count: state.count
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return bindActionCreators(Actions, dispatch)
+}
+
+const RootConnecter = connect(
+    mapStateToProps,
+    mapDispatchToProps
 )(View)
 
 ReactDOM.render(
 <Provider store={store}>
-    <Connecter />
+    <RootConnecter />
 </Provider>,
 document.getElementById('root'));
 registerServiceWorker();
