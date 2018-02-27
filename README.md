@@ -1,5 +1,4 @@
-# React-Study
-React.js周りの練習成果物をまとめています。
+# Learn-React
 
 ## React Getjson
 フォームに入力されたJSONファイルをサーバに問い合わせて表示する。
